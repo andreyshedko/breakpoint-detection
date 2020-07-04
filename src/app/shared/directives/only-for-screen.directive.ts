@@ -7,7 +7,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class OnlyForScreenDirective implements OnInit {
 
-  @Input() mode: string;
+  @Input() public readonly mode: string;
 
   constructor(
     public el: ElementRef,
@@ -15,11 +15,10 @@ export class OnlyForScreenDirective implements OnInit {
     private readonly breakpointObserver: BreakpointObserver) { }
 
   ngOnInit() {
-    if (this.mode) {
       this.breakpointObserver.observe(
         [this.mode]
       ).subscribe(results => {
-        if (results.matches && results.breakpoints[this.mode]) {
+        if (results.matches) {
           this.renderer.addClass(this.el.nativeElement, 'show');
           this.renderer.removeClass(this.el.nativeElement, 'hide');
         } else {
@@ -27,6 +26,5 @@ export class OnlyForScreenDirective implements OnInit {
           this.renderer.removeClass(this.el.nativeElement, 'show');
         }
       });
-    }
   }
 }
